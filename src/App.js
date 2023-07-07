@@ -64,6 +64,16 @@ export default function App() {
     fetchData();
   }, []);
 
+// Set current status of GitHub, if there is an incident in the last hour, GitHub is experiencing issues
+const currentStatus = incidentData.some((incident) => moment(incident.updated).isAfter(moment().subtract(1, 'hour')))
+  ? 'Experiencing issues ⚠️'
+  : 'All Systems Operational';
+
+// Change background color of text currentStatus based on current status
+const currentStatusColor = incidentData.some((incident) => moment(incident.updated).isAfter(moment().subtract(1, 'hour')))
+  ? 'bg-red-500'
+  : 'bg-green-500';
+
 // Count number of incidents per day
 const incidentCountByDate = {};
 incidentData.forEach((incident) => {
@@ -76,7 +86,7 @@ const chartData = {
   labels: Object.keys(incidentCountByDate),
   datasets: [
     {
-      label: 'GitHub Incidents count',
+      label: 'Count',
       data: incidentData.map((incident) => ({
         x: incident.date,
         y: incidentCountByDate[incident.date],
@@ -107,25 +117,35 @@ const chartOptions = {
         text: 'Date',
       },
     },
+    y: {
+      title: {
+        display: true,
+        text: 'Incidents',
+      },
+    },
   },
   plugins: {
     tooltip: {
       callbacks: {
         label: (context) =>
-          `${incidentData[context.dataIndex].timeRange} \n, ${incidentData[context.dataIndex].title}`,
+          `${incidentData[context.dataIndex].timeRange}, ${incidentData[context.dataIndex].title}`,
       },
     },
   },
 };
 
   return (
-    <div className='flex md:h-screen flex-col m-0 p-0 items-center transform rotate-90 md:transform-none md:rotate-0'>
-      <div className='flex flex-col h-full md:w-full md:h-fit'>
-        <h1 className='h-full md:w-full md:h-fit text-3xl text-center px-4 py-3 border-b border-slate-300'>GitHub Status</h1>
-        <p className='text-center m-2'>Incidents in the last month</p>
+    <div className='flex h-screen flex-col m-0 p-0 items-center'>
+      <div className='flex flex-col w-full'>
+        <h1 className='w-full  text-3xl text-center px-4 py-3 border-b border-slate-200 shadow-lg'>GitHub Status</h1> 
+        <p className='text-center mt-6'><span className={currentStatusColor +' rounded-xl p-2 font-bold text-white'}>{currentStatus}</span></p>
+        <p className='text-center mt-6'>Incidents in the last month</p>
       </div>
-      <div className='h-full md:w-full flex flex-1 md:h-[calc(100vh-80px)] justify-center p-6'>
+      <div className='w-full flex flex-1 h-[calc(100vh-210px)] justify-center px-6'>
         <Bar data={chartData} options={chartOptions}/>
+      </div>
+      <div className='flex flex-col w-full'>
+        <p className='w-full text-center px-4 py-3 border-t border-slate-200'>Data from <a href='https://www.githubstatus.com/' className='text-blue-500'>GitHub Status</a>, created by <a href='https://www.github.com/artmen1516' className='text-blue-500'> Artmen1516</a>  </p>
       </div>
     </div>
   );
