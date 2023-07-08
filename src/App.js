@@ -136,16 +136,16 @@ const chartOptions = {
 
   return (
     <div className='flex h-screen flex-col m-0 p-0 items-center'>
-      <div className='flex flex-col w-full'>
-        <h1 className='w-full  text-3xl text-center px-4 py-3 border-b border-slate-200 shadow-lg'>GitHub Status</h1> 
+      <div className='flex flex-col w-screen'>
+        <h1 className='w-screen  text-3xl text-center px-4 py-3 border-b border-slate-200 shadow-lg'>GitHub Status</h1> 
         <p className='text-center mt-6'><span className={currentStatusColor +' rounded-xl p-2 font-bold text-white'}>{currentStatus}</span></p>
         <p className='text-center mt-6'>Incidents in the last month</p>
       </div>
-      <div className='w-full flex flex-1 h-[calc(100vh-210px)] justify-center px-6'>
+      <div className='flex flex-1 w-screen h-[calc(100vh-210px)] justify-center px-6'>
         <Bar data={chartData} options={chartOptions}/>
       </div>
-      <div className='flex flex-col w-full'>
-        <p className='w-full text-center px-4 py-3 border-t border-slate-200'>Data from <a href='https://www.githubstatus.com/' className='text-blue-500'>GitHub Status</a>, created by <a href='https://www.github.com/artmen1516' className='text-blue-500'> Artmen1516</a>  </p>
+      <div className='flex flex-col w-screen'>
+        <p className='w-screen text-center px-4 py-3 border-t border-slate-200'>Data from <a href='https://www.githubstatus.com/' className='text-blue-500'>GitHub Status</a>, created by <a href='https://www.github.com/artmen1516' className='text-blue-500'> Artmen1516</a>  </p>
       </div>
     </div>
   );
